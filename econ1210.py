@@ -287,7 +287,7 @@ def loss_to_tax():
     dwl = float(input("welfare loss="))
     c = input("tax/subsidy? t/s ")
     s = input("P=/Q=? p/q ")
-    pd, ps, q, p0, q0, tr, dq = (0, 0, 0, 0, 0, 0, 0)
+    pd, ps, q, p0, q0, tr, dq, t = (0, 0, 0, 0, 0, 0, 0, 0)
     if (s == "p") & (c == "t"):
         print("Pd = c1 + a1*Q")
         c1 = float(input("c1="))
@@ -356,6 +356,46 @@ def loss_to_tax():
     print("tax (subsidy -) :", round(t, 4))
 
 
+def add_demand():
+    s = input("P=/Q=?, p/q")
+    if s == "q":
+        print("Q=c+aP")
+    elif s == "p":
+        print("P=c+aQ")
+    c1 = float(input("c1="))
+    a1 = float(input("a1="))
+    c2 = float(input("c2="))
+    a2 = float(input("a2="))
+    if s == "p":
+        c1 = -c1/a1
+        a1 = 1/a1
+        c2 = -c2/a2
+        a2 = 1/a2
+    mp1 = -c1/a1
+    mp2 = -c2/a2
+    if mp1 < mp2:
+        c1, c2 = c2, c1
+        a1, a2 = a2, a1
+        mp1, mp2 = mp2, mp1
+    print("(0,", round(mp1, 6), "), (", round(c1+a1*mp2, 6), ",", round(mp2, 6), "), (", round(c1+c2, 6), ", 0)")
+    '''s = input("calculate surplus? y/n")
+    if s == "y":
+        c = input("P/Q? p/q")
+        if c == "p":
+            p = float(input("P="))
+            if p >= mp2:
+                cs = (mp1-p)*(c1+a1*p)/2
+            else:
+                cs = (mp1-mp2)*(c1+a1*mp2)/2 + ((c1+a1*mp2)+(c1+a1*p+c1+a2*p))*(mp2-p)/2
+        elif c == "q":
+            q = float(input("Q="))
+            if q <= (c1+a1*mp2):
+                cs = q*(mp1-(q-c1)/a1)/2
+            else:
+                cs = (mp1-mp2)*(c1+a1*mp2)/2 + (q+(c1+a1*mp2))*(mp2-(q-c1-c2)/(a1+a2))/2
+    print("consumer surplus = ", round(cs, 6))'''
+
+
 if __name__ == '__main__':
     # equation_transform(mode=1, c=-20000, a=75)  # 等式变形; (mode, c, a); mode 1: P=; mode 2: Q=;
     # worker_allocate()  # 人员分配达到最大产量; io: "worker allocate.xlsx"; 1行1列是总人数; 输入-1全排;
@@ -368,4 +408,5 @@ if __name__ == '__main__':
     # curve_elasticity()  # 根据表达式计算elasticity
     # price_change()  # 计算demand/supply变化带来的影响
     # tax_influence()  # 计算收税的结果
-    loss_to_tax()  # 根据财富损失算收税/补贴
+    # loss_to_tax()  # 根据财富损失算收税/补贴
+    add_demand()  # 两个demand曲线求和
